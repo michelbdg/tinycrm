@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Client;
 use App\Entity\Interaction;
 use App\Entity\Offre;
 use App\Entity\Transaction;
@@ -47,13 +48,14 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Accueil', 'fa fa-home');
         yield MenuItem::section('Gestion des utilisateurs');
-        yield MenuItem::linkToCrud('Nos clients', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Nos clients', 'fa fa-users', Client::class);
         yield MenuItem::linkToCrud('Suivi', 'fa fa-calendar', Interaction::class);
         yield MenuItem::linkToCrud('Nos offres', 'fa fa-cubes', Offre::class);
         yield MenuItem::linkToCrud('Transaction', 'fa fa-euro', Transaction::class);
         yield MenuItem::section('Gestion des articles');
         yield MenuItem::linkToCrud('Les articles', 'fa fa-newspaper', Article::class);
         yield MenuItem::section('Gestion des paramètres');
+        yield MenuItem::linkToCrud('Comptes', 'fa fa-user', User::class);
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
