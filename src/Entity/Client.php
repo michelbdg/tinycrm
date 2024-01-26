@@ -52,11 +52,15 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Interaction::class, orphanRemoval: true)]
     private Collection $interactions;
 
+    #[ORM\ManyToMany(targetEntity: Offre::class, mappedBy: 'client')]
+    private Collection $offres;
+
     public function __construct()
     {
         $this->interactions = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
+        $this->offres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -236,6 +240,33 @@ class Client
             if ($interaction->getClient() === $this) {
                 $interaction->setClient(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offre>
+     */
+    public function getOffres(): Collection
+    {
+        return $this->offres;
+    }
+
+    public function addOffre(Offre $offre): static
+    {
+        if (!$this->offres->contains($offre)) {
+            $this->offres->add($offre);
+            $offre->addClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffre(Offre $offre): static
+    {
+        if ($this->offres->removeElement($offre)) {
+            $offre->removeClient($this);
         }
 
         return $this;
