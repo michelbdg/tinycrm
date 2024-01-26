@@ -40,6 +40,8 @@ class Offre
     public function __construct()
     {
         $this->client = new ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
     }
 
     public function getId(): ?int
@@ -117,6 +119,11 @@ class Offre
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->titre;
     }
 
     /**
