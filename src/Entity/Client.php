@@ -55,12 +55,16 @@ class Client
     #[ORM\ManyToMany(targetEntity: Offre::class, mappedBy: 'client')]
     private Collection $offres;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Transaction::class, orphanRemoval: true)]
+    private Collection $transactions;
+
     public function __construct()
     {
         $this->interactions = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
         $this->offres = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -267,6 +271,36 @@ class Client
     {
         if ($this->offres->removeElement($offre)) {
             $offre->removeClient($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getClient() === $this) {
+                $transaction->setClient(null);
+            }
         }
 
         return $this;
