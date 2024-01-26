@@ -2,6 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Entity\Interaction;
+use App\Entity\Offre;
+use App\Entity\Transaction;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -35,12 +40,21 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('<img src="/images/logo.png" height="40"> ');
+            ->setTitle('<img src="/images/logo.png" height="40">');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Accueil', 'fa fa-home');
+        yield MenuItem::section('Gestion des utilisateurs');
+        yield MenuItem::linkToCrud('Nos clients', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Suivi', 'fa fa-calendar', Interaction::class);
+        yield MenuItem::linkToCrud('Nos offres', 'fa fa-cubes', Offre::class);
+        yield MenuItem::linkToCrud('Transaction', 'fa fa-euro', Transaction::class);
+        yield MenuItem::section('Gestion des articles');
+        yield MenuItem::linkToCrud('Les articles', 'fa fa-newspaper', Article::class);
+        yield MenuItem::section('Gestion des paramètres');
+        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }
