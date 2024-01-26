@@ -11,8 +11,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ClientCrudController extends AbstractCrudController
 {
@@ -58,6 +60,8 @@ class ClientCrudController extends AbstractCrudController
             TextField::new('ville', 'Ville'),
             TextField::new('cp', 'Code postal')->hideOnIndex(),
             TextField::new('pays', 'Pays')->hideOnIndex(),
+            BooleanField::new('statut', 'Statut du client')
+                ->setHelp('Ce champs permet de définir si le client est actif ou non'),
             FormField::addPanel('Informations complémentaires')->onlyOnDetail(),
             DateField::new('created_at', 'Enregistré le')->hideOnForm()->hideOnIndex(),
             DateField::new('updated_at', 'Dernière modification le')->hideOnIndex(),
