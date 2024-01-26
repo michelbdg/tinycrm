@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -42,10 +44,20 @@ class Client
     private ?bool $statut = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private ?\DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated = null;
+    private ?\DateTimeInterface $updated_at = null;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Interaction::class, orphanRemoval: true)]
+    private Collection $interactions;
+
+    public function __construct()
+    {
+        $this->interactions = new ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+    }
 
     public function getId(): ?int
     {
@@ -160,26 +172,26 @@ class Client
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created;
+        return $this->created_at;
     }
 
-    public function setCreated(\DateTimeInterface $created): static
+    public function setCreatedAt(\DateTimeInterface $created_at): static
     {
-        $this->created = $created;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdated(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated;
+        return $this->updated_at;
     }
 
-    public function setUpdated(\DateTimeInterface $updated): static
+    public function setUpdatedAt(\DateTimeInterface $updated_at): static
     {
-        $this->updated = $updated;
+        $this->updated_at = $updated_at;
 
         return $this;
     }
@@ -197,5 +209,35 @@ class Client
     public function getStatus(): string
     {
         return $this->isStatut() ? 'Prospect' : 'Signé';
+    }
+
+    /**
+     * @return Collection<int, Interaction>
+     */
+    public function getInteractions(): Collection
+    {
+        return $this->interactions;
+    }
+
+    public function addInteraction(Interaction $interaction): static
+    {
+        if (!$this->interactions->contains($interaction)) {
+            $this->interactions->add($interaction);
+            $interaction->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteraction(Interaction $interaction): static
+    {
+        if ($this->interactions->removeElement($interaction)) {
+            // set the owning side to null (unless already changed)
+            if ($interaction->getClient() === $this) {
+                $interaction->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }
