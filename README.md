@@ -4,6 +4,11 @@
 
 Le présent document vise à définir le cadre d'un projet de fin d'études CDA (Conception et Développement d'Applications) intitulé "TinyCRM". Ce projet a pour objectif de concevoir et développer une application de type CRM (Customer Relationship Management) destinée aux agences SMMA (Social Media Marketing Agency).
 
+## Technologies
+
+- Symfony 7
+- SQLite
+
 ## Description du Projet
 
 ### TinyCRM
