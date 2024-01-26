@@ -80,6 +80,7 @@ Une offre est une proposition commerciale envoyée à un prospect. Elle peut êt
 | titre       | string(50)        | -        |
 | description | text              | -        |
 | montant     | decimal(10,2)     | -        |
+| fichier     | string(255)       | -        |
 | created     | datetime          | -        |
 | updated     | datetime          | -        |
 
