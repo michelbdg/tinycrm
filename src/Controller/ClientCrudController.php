@@ -30,6 +30,7 @@ class ClientCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Ajouter un client')
             ->setPageTitle('edit', 'Modifier un client')
             ->setPageTitle('detail', 'Détails du client')
+            ->setTimezone('Europe/Paris')
             ->setSearchFields(['nom', 'prenom', 'email', 'telephone', 'adresse', 'ville', 'cp', 'pays'])
             ->setDefaultSort(['nom' => 'ASC'])
         ;
@@ -38,7 +39,7 @@ class ClientCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL, 'fa fa-eye')
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
         ;
     }
@@ -47,6 +48,7 @@ class ClientCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->onlyOnDetail(),
+            FormField::addPanel('Informations personnelles'),
             TextField::new('nom', 'Nom du client')
                 ->setHelp('Ce champs contient le nom du client'),
             TextField::new('prenom', 'Prénom du client')
@@ -57,15 +59,14 @@ class ClientCrudController extends AbstractCrudController
                 ->setHelp('Ce champs contient le numéro de téléphone du client'),
             TextField::new('adresse', 'Adresse du client')->hideOnIndex()
                 ->setHelp('Ce champs contient l\'adresse du client'),
-            TextField::new('ville', 'Ville'),
+            TextField::new('ville', 'Ville')->hideOnIndex(),
             TextField::new('cp', 'Code postal')->hideOnIndex(),
             TextField::new('pays', 'Pays')->hideOnIndex(),
             BooleanField::new('statut', 'Statut du client')
                 ->setHelp('Ce champs permet de définir si le client est actif ou non'),
-            FormField::addPanel('Informations complémentaires')->onlyOnDetail(),
+            FormField::addPanel('Informations complémentaires'),
             DateField::new('created_at', 'Enregistré le')->hideOnForm()->hideOnIndex(),
             DateField::new('updated_at', 'Dernière modification le')->hideOnIndex(),
-            // TextEditorField::new('description'),
         ];
     }
 }
