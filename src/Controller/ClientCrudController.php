@@ -67,8 +67,12 @@ class ClientCrudController extends AbstractCrudController
             BooleanField::new('statut', 'Statut du client')
                 ->setHelp('Ce champs permet de définir si le client est actif ou non'),
             FormField::addPanel('Informations complémentaires'),
-            DateField::new('created_at', 'Enregistré le')->hideOnForm()->hideOnIndex(),
-            DateField::new('updated_at', 'Dernière modification le')->hideOnIndex(),
+            DateField::new('created_at', 'Enregistré le')
+                ->hideOnForm()->hideOnIndex()
+                ->setFormat('dd/MM/yyyy à HH:mm:ss'),
+            DateField::new('updated_at', 'Dernière modification le')
+                ->hideOnIndex()
+                ->setFormat('dd/MM/yyyy à HH:mm:ss'),
         ];
     }
 }
