@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Client;
+use App\Entity\Interaction;
 use App\Entity\Transaction;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,16 +21,14 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
             ->setPassword('$2y$13$uL1j7kIasILs4c7W4AWevOMO.PbwtANAzR1i5YkKrazZ0sL.KLS8K')
-            ->setRoles(['ROLE_ADMIN'])
-            ;
+            ->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
 
         // Membre de l'équipe
         $membre = new User();
         $membre->setEmail('user@user.fr')
             ->setPassword('$2y$13$uL1j7kIasILs4c7W4AWevOMO.PbwtANAzR1i5YkKrazZ0sL.KLS8K')
-            ->setRoles(['ROLE_USER'])
-            ;
+            ->setRoles(['ROLE_USER']);
 
         // Clients de l'agence
         $clients = [];
@@ -46,8 +45,7 @@ class AppFixtures extends Fixture
                 ->setPays($faker->country())
                 ->setStatut($faker->boolean(60))
                 ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
-                ;
+                ->setUpdatedAt($faker->dateTimeBetween('-5 months'));
             $manager->persist($client);
             array_push($clients, $client);
         }
@@ -95,15 +93,14 @@ class AppFixtures extends Fixture
                 ->setMontant($data['montant'])
                 ->setFichier($data['fichier'])
                 ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
-                ;
+                ->setUpdatedAt($faker->dateTimeBetween('-5 months'));
             $manager->persist($offre);
             array_push($offresArray, $offre);
         }
 
         // Ajout des offres aux clients
         foreach ($clients as $client) {
-            if($client->isStatut()) {
+            if ($client->isStatut()) {
                 $client->addOffre($faker->randomElement($offresArray));
                 $client->addOffre($faker->randomElement($offresArray));
             }
@@ -119,9 +116,31 @@ class AppFixtures extends Fixture
                 ->setStatut('Payé')
                 ->setDate($date)
                 ->setCreatedAt($date)
-                ->setUpdatedAt($date)
-                ;
+                ->setUpdatedAt($date);
             $manager->persist($transaction);
+        }
+
+        // Interactions
+        $interactions = [
+            'Appel téléphonique',
+            'Email',
+            'Rendez-vous',
+            'Visite',
+            'Réunion',
+            'Visioconférence',
+            'SMS'
+        ];
+        for ($i = 0; $i < 20; $i++) {
+            $date = $faker->dateTimeBetween('-6 months');
+
+            $interaction = new Interaction();
+            $interaction->setType($faker->randomElement($interactions))
+                ->setCommentaires($faker->text())
+                ->setDate($date)
+                ->setCreatedAt($date)
+                ->setUpdatedAt($date)
+                ->setClient($faker->randomElement($clients));
+            $manager->persist($interaction);
         }
 
         $manager->flush();
