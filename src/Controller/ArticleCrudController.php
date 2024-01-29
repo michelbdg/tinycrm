@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use DateTime;
+use DateTimeInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -50,8 +52,12 @@ class ArticleCrudController extends AbstractCrudController
             BooleanField::new('publie', 'Statut de publication')
                 ->setHelp('Ce champs permet de publier ou non l\'article'),
             FormField::addPanel('Informations complémentaires')->onlyOnDetail(),
-            DateField::new('created_at', 'Enregistré le')->hideOnForm()->hideOnIndex(),
-            DateField::new('updated_at', 'Dernière modification le')->hideOnIndex(),
+            DateField::new('created_at', 'Enregistré le')
+                ->hideOnForm()->hideOnIndex()
+                ->setFormat('dd/MM/yyyy à HH:mm:ss'),
+            DateField::new('updated_at', 'Dernière modification le')
+                ->hideOnIndex()->hideOnForm()->setValue(new DateTime('now'))
+                ->setFormat('dd/MM/yyyy à HH:mm:ss'),
         ];
     }
 }
