@@ -32,16 +32,14 @@ class ClientCrudController extends AbstractCrudController
             ->setPageTitle('detail', 'Détails du client')
             ->setTimezone('Europe/Paris')
             ->setSearchFields(['nom', 'prenom', 'email', 'telephone', 'adresse', 'ville', 'cp', 'pays'])
-            ->setDefaultSort(['nom' => 'ASC'])
-        ;
+            ->setDefaultSort(['nom' => 'ASC']);
     }
 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-        ;
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 
     public function configureFields(string $pageName): iterable
@@ -49,9 +47,13 @@ class ClientCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnDetail(),
             FormField::addPanel('Informations personnelles'),
+            TextField::new('nomComplet')
+                ->onlyOnIndex(),
             TextField::new('nom', 'Nom du client')
+                ->hideOnIndex()
                 ->setHelp('Ce champs contient le nom du client'),
             TextField::new('prenom', 'Prénom du client')
+                ->hideOnIndex()
                 ->setHelp('Ce champs contient le prénom du client'),
             EmailField::new('email', 'E-mail du client')
                 ->setHelp('Ce champs contient l\'adresse e-mail du client'),
