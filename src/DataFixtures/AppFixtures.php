@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Client;
+use App\Entity\Article;
 use App\Entity\Interaction;
 use App\Entity\Transaction;
 use Doctrine\Persistence\ObjectManager;
@@ -109,9 +110,14 @@ class AppFixtures extends Fixture
         // Transactions
         for ($i = 0; $i < 20; $i++) {
             $date = $faker->dateTimeBetween('-6 months');
-
+            $clientsActives = [];
+            foreach ($clients as $client) {
+                if ($client->isStatut()) {
+                    array_push($clientsActives, $client);
+                }
+            }
             $transaction = new Transaction();
-            $transaction->setClient($faker->randomElement($clients))
+            $transaction->setClient($faker->randomElement($clientsActives))
                 ->setMontant($faker->randomElement([1000, 2000, 3000, 5000]))
                 ->setStatut('Payé')
                 ->setDate($date)
@@ -141,6 +147,55 @@ class AppFixtures extends Fixture
                 ->setUpdatedAt($date)
                 ->setClient($faker->randomElement($clients));
             $manager->persist($interaction);
+        }
+
+        // Articles
+        $articles = [
+            'Comment bien utiliser LinkedIn ?' => [
+                'image' => 'article1.jpg'
+            ],
+            'Comment bien utiliser Facebook ?' => [
+                'image' => 'article2.jpg'
+            ],
+            'Comment bien utiliser Instagram ?' => [
+                'image' => 'article3.jpg'
+            ],
+            'Comment bien utiliser Twitter ?' => [
+                'image' => 'article4.jpg'
+            ],
+            'Comment bien utiliser TikTok ?' => [
+                'image' => 'article5.jpg'
+            ],
+            'Comment bien utiliser Snapchat ?' => [
+                'image' => 'article6.jpg'
+            ],
+            'Comment bien utiliser YouTube ?' => [
+                'image' => 'article7.jpg'
+            ],
+            'Comment bien utiliser Pinterest ?' => [
+                'image' => 'article8.jpg'
+            ],
+            'Comment bien utiliser WhatsApp ?' => [
+                'image' => 'article9.jpg'
+            ],
+            'Mettre en place une stratégie de communication' => [
+                'image' => 'article10.jpg'
+            ],
+            'Développer sa marque personnelle' => [
+                'image' => 'article11.jpg'
+            ],
+            'Comment bien utiliser Google My Business ?' => [
+                'image' => 'article12.jpg'
+            ],
+        ];
+        foreach ($articles as $titre => $data) {
+            $article = new Article();
+            $article->setTitre($titre)
+                ->setContenu($faker->text(3000))
+                ->setPublie($faker->boolean(80))
+                ->setCreatedAt($faker->dateTimeBetween('-6 months'))
+                ->setUpdatedAt($faker->dateTimeBetween('-5 months'));
+            $manager->persist($article);
         }
 
         $manager->flush();
