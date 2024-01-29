@@ -51,10 +51,10 @@ class OffreCrudController extends AbstractCrudController
                 ->setCurrency('EUR')
                 ->setStoredAsCents(false),
             DateField::new('createdAt', 'Créé le')
-                ->setFormat('dd-MM-yyyy')
+                ->setFormat('dd/MM/yyyy')
                 ->onlyOnDetail(),
             DateField::new('updatedAt', 'Mis à jour le')
-                ->setFormat('dd-MM-yyyy')
+                ->setFormat('dd/MM/yyyy')
                 ->onlyOnDetail()
         ];
     }
