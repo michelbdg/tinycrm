@@ -53,12 +53,12 @@ class InteractionCrudController extends AbstractCrudController
             TextareaField::new('commentaires', 'Commentaires')
                 ->setHelp('Ce champs contient les commentaires de l\'interaction'),
             DateField::new('date', 'Date de l\'interaction')
-                ->setFormat('dd-MM-yyyy'),
+                ->setFormat('dd/MM/yyyy'),
             DateField::new('createdAt', 'Créé le')
-                ->setFormat('dd-MM-yyyy')
+                ->setFormat('dd/MM/yyyy')
                 ->onlyOnDetail(),
             DateField::new('updatedAt', 'Mis à jour le')
-                ->setFormat('dd-MM-yyyy')
+                ->setFormat('dd/MM/yyyy')
                 ->onlyOnDetail()
         ];
     }
