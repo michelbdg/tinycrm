@@ -305,4 +305,14 @@ class Client
 
         return $this;
     }
+
+    // Get the total amount of transactions for a client
+    public function getTotalTransactions(): float
+    {
+        $total = 0;
+        foreach ($this->getTransactions() as $transaction) {
+            $total += $transaction->getMontant();
+        }
+        return $total;
+    }
 }
