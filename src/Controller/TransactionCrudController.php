@@ -10,8 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CurrencyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
@@ -36,9 +34,6 @@ class TransactionCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->onlyOnDetail(),
-            MoneyField::new('montant', 'Montant de la transaction')
-                ->setCurrency('EUR')
-                ->setStoredAsCents(false),
             AssociationField::new('client', 'Client de la transaction'),
             TextField::new('statut', 'Statut de la transaction'),
             DateField::new('date', 'Date de la transaction')
@@ -49,7 +44,10 @@ class TransactionCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             DateField::new('updatedAt', 'Mis à jour le')
                 ->setFormat('dd-MM-yyyy')
-                ->hideOnIndex()
+                ->hideOnIndex(),
+            MoneyField::new('montant', 'Montant de la transaction')
+                ->setCurrency('EUR')
+                ->setStoredAsCents(false),
         ];
     }
 }
