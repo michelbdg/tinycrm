@@ -9,12 +9,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use phpDocumentor\Reflection\Types\Boolean;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 
 class ClientCrudController extends AbstractCrudController
 {
@@ -73,6 +72,11 @@ class ClientCrudController extends AbstractCrudController
             DateField::new('updated_at', 'Dernière modification le')
                 ->hideOnIndex()
                 ->setFormat('dd/MM/yyyy à HH:mm:ss'),
+            MoneyField::new('totalTransactions', 'Total des transactions')
+                ->setCurrency('EUR')
+                ->setStoredAsCents(false)
+                ->hideOnForm()
+                ->hideOnIndex(),
         ];
     }
 }
