@@ -16,7 +16,7 @@ class PaymentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Client', EntityType::class, [
+            ->add('client', EntityType::class, [
                 'class' => Client::class,
                 'choice_label' => 'nomComplet',
             ])
